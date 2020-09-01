@@ -2,6 +2,7 @@
   "name": "github-user-search",
   "version": "0.1.0",
   "private": true,
+  "main": "build/index.js",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -10,22 +11,34 @@
     "@types/node": "^12.12.54",
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
+    "@types/react-relay": "^7.0.9",
+    "@types/relay-runtime": "^10.0.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.2",
-    "react-scripts": "3.4.3",
+    "react": "0.0.0-experimental-94c0244ba",
+    "react-dom": "0.0.0-experimental-94c0244ba",
+    "react-relay": "0.0.0-experimental-183bdd28",
+    "react-scripts": "^4.0.0-next.77",
+    "relay-runtime": "^10.0.1",
     "supertest": "^4.0.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.7"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "npm run start:server & npm run relay && react-scripts start",
+    "start:server": "node server/index.js",
+    "build": "npm run relay && react-scripts build",
     "test": "react-scripts test",
     "test:server": "cross-env NODE_ENV=test  jest --config ./jest.server.config.js --testTimeout 10000",
+    "relay": "relay-compiler --schema schema.graphql --src ./src/ --language typescript --watchman false $@",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "prettier/@typescript-eslint",
+      "plugin:prettier/recommended"
+    ]
   },
   "browserslist": {
     "production": [
@@ -40,6 +53,15 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.2"
+    "babel-plugin-relay": "^10.0.1",
+    "cross-env": "^7.0.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "graphql": "^15.3.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.13",
+    "prettier": "^2.1.1",
+    "relay-compiler": "^10.0.1",
+    "relay-compiler-language-typescript": "^13.0.1"
   }
 }

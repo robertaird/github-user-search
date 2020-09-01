@@ -1,14 +1,17 @@
+import type {} from 'react-dom/experimental';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import { App } from './components/app';
+// import type CreateClass
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
+const root = document.getElementById('root') as HTMLDivElement;
+
+ReactDOM.unstable_createRoot(root).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
