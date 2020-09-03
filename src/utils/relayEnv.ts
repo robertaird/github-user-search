@@ -6,7 +6,7 @@ async function fetchRelay(
   variables: Record<string, string>,
 ) {
   if (params.text) {
-    return fetchGitHub(params.text, variables);
+    return fetchGitHub(params, variables);
   }
 }
 

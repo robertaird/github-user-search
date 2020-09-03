@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { App } from './components/app';
-// import type CreateClass
 import * as serviceWorker from './serviceWorker';
 
 const root = document.getElementById('root') as HTMLDivElement;

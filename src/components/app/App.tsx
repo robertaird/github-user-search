@@ -1,69 +1,21 @@
-import React, { useEffect, Suspense } from 'react';
-import graphql from 'babel-plugin-relay/macro';
-import {
-  RelayEnvironmentProvider,
-  useQueryLoader,
-  usePreloadedQuery,
-} from 'react-relay/hooks';
+import React from 'react';
+import { RelayEnvironmentProvider } from 'react-relay/hooks';
 import logo from './logo.svg';
 import './App.css';
+import { UserRoot } from 'components/users';
 import { RelayEnvironment } from 'utils';
-import type {
-  default as AppRepositoryConcrete,
-  AppRepositoryNameQuery,
-} from './__generated__/AppRepositoryNameQuery.graphql';
 
-const RepositoryNameQuery = graphql<typeof AppRepositoryConcrete>`
-  query AppRepositoryNameQuery {
-    repository(owner: "facebook", name: "relay") {
-      name
-    }
-  }
-`;
-
-type AppProps = {
-  queryReference: any;
-};
-
-function App({ queryReference }: AppProps) {
-  const data = usePreloadedQuery<AppRepositoryNameQuery>(
-    RepositoryNameQuery,
-    queryReference,
-  );
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{data.repository?.name}</p>
-      </header>
-    </div>
-  );
-}
-
-function LoadStuff() {
-  const [queryReference, loadQuery, disposeQuery] = useQueryLoader(
-    RepositoryNameQuery,
-  );
-  useEffect(() => {
-    loadQuery();
-    return () => {
-      disposeQuery();
-    };
-  }, [disposeQuery, loadQuery]);
-
-  return queryReference === null ? null : (
-    <Suspense fallback={'Loading...'}>
-      <App queryReference={queryReference} />
-    </Suspense>
-  );
-}
-
-function AppRoot() {
+function App() {
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <LoadStuff />
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <UserRoot />
+        </header>
+      </div>
     </RelayEnvironmentProvider>
   );
 }
 
-export default AppRoot;
+export default App;

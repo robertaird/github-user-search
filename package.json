@@ -4,6 +4,7 @@
   "private": true,
   "main": "build/index.js",
   "dependencies": {
+    "@material-ui/core": "^5.0.0-alpha.8",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -21,16 +22,18 @@
     "react-relay": "0.0.0-experimental-183bdd28",
     "react-scripts": "^4.0.0-next.77",
     "relay-runtime": "^10.0.1",
+    "styled-components": "^5.2.0-test.12",
     "supertest": "^4.0.2",
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "start": "npm run start:server & npm run relay && react-scripts start",
+    "start": "npm run start:server & npm run relay:watch & react-scripts start",
     "start:server": "node server/index.js",
     "build": "npm run relay && react-scripts build",
     "test": "react-scripts test",
     "test:server": "cross-env NODE_ENV=test  jest --config ./jest.server.config.js --testTimeout 10000",
     "relay": "relay-compiler --schema schema.graphql --src ./src/ --language typescript --watchman false $@",
+    "relay:watch": "relay-compiler --schema schema.graphql --src ./src/ --extensions ts tsx --language typescript --watch",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

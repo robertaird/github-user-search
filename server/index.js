@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config({ path: path.resolve(process.cwd(), '.env.local') });
 }
 
-const PORT = process.env.SERVER_PORT || 8080;
+const PORT = process.env.REACT_APP_SERVER_PORT || 8080;
 
 require('./proxy')(app);
 
