@@ -12,7 +12,9 @@ function forceSsl(req, res, next) {
 
 /* istanbul ignore else */
 if (env !== 'production') {
-  require('dotenv').config({ path: path.resolve(process.cwd(), '.env.local') });
+  require('dotenv').config({
+    path: path.resolve(process.cwd(), '.env.development.local'),
+  });
 } else {
   app.use(forceSsl);
 }

@@ -35,6 +35,7 @@ type ItemProps = {
 type FlexProps = {
   width?: string;
 };
+
 const FlexItem = styled.div<FlexProps>`
   flex: 0 0 auto;
   padding: 16px;
@@ -57,12 +58,14 @@ const InfoIconText = styled(Typography)`
 
 const BioText = styled(Typography)`
   max-width: 80%;
-  transform: translateT(-0.75em);
+  transform: translateY(-0.75em);
 `;
 
 const Skeleton = styled(BaseSkeleton)`
   min-width: 20px;
 `;
+
+const TextSkeleton = <Skeleton variant="text" />;
 
 const AvatarSkeleton = (
   <Skeleton
@@ -72,7 +75,6 @@ const AvatarSkeleton = (
     variant="circular"
   />
 );
-const TextSkeleton = <Skeleton variant="text" />;
 
 const SuspenseAvatar = ({
   alt,

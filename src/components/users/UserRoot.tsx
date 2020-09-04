@@ -66,7 +66,7 @@ export function UserRoot({ defaultSearch = '', init }: UserRootProps) {
   }, [defaultSearch, loadQuery]);
 
   return (
-    <Grid container>
+    <Grid container spacing={1}>
       <GridItem>
         <TextField
           data-testid="search-input"

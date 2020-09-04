@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import graphql from 'babel-plugin-relay/macro';
 import { usePaginationFragment } from 'react-relay/hooks';
 import { Grid, Typography } from '@material-ui/core';
-import UserList from './UserList';
+import UserList from './List';
 import UserNav from './Nav';
 import type { UserSearchQuery$key } from './__generated__/UserSearchQuery.graphql';
 
@@ -145,7 +145,7 @@ export function UserSearch({ users }: UserSearchProps) {
         startPos={startPos}
         endPos={userCount === 0 ? 0 : nextPos}
       />
-      {Nav}
+      {userCount > 0 && Nav}
     </Container>
   );
 }

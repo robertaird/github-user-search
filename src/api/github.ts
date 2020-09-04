@@ -2,7 +2,10 @@ const host = process.env.REACT_APP_SERVER_HOST || '';
 const port = process.env.REACT_APP_SERVER_PORT
   ? `:${process.env.REACT_APP_SERVER_PORT}`
   : '';
-const serverUrl = `${host}${port}`;
+let serverUrl = `${host}${port}`;
+if (process.env.NODE_ENV === 'production') {
+  serverUrl = `${serverUrl}${window.location.pathname.replace(/\/$/, '')}`;
+}
 
 export async function fetchGitHub(
   { text, name }: import('relay-runtime').RequestParameters,

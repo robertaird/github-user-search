@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import UserList from '../UserList';
+import UserList from '../List';
 import ErrorBoundary from 'components/errorBoundary';
 
 import edges from '__mockData__/userEdges';
