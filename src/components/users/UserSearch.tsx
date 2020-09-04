@@ -1,31 +1,40 @@
-import React, { useCallback } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  unstable_useDeferredValue as useDeferredValue,
+  unstable_useTransition as useTransition,
+} from 'react';
+import styled from 'styled-components';
 import graphql from 'babel-plugin-relay/macro';
 import { usePaginationFragment } from 'react-relay/hooks';
-import { Avatar, Link } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
+import UserList from './UserList';
+import UserNav from './Nav';
 import type { UserSearchQuery$key } from './__generated__/UserSearchQuery.graphql';
 
 type UserSearchProps = {
   users: any;
 };
 
+const Container = styled.div`
+  width: 100%;
+  padding-bottom: 2rem;
+`;
+
+const count = 10;
+const deferredConfig = { timeoutMs: 500 };
+const transitionConfig = { timeoutMs: 3000 };
 const UserSearchQuery = graphql`
   fragment UserSearchQuery on Query
   @argumentDefinitions(
     query: { type: "String!" }
     cursor: { type: "String" }
-    beforeCursor: { type: "String" }
-    count: { type: "Int", defaultValue: 20 }
-    lastCount: { type: "Int" }
+    count: { type: "Int", defaultValue: 10 }
   )
   @refetchable(queryName: "UserSearchPaginationQuery") {
-    search(
-      query: $query
-      type: USER
-      first: $count
-      after: $cursor
-      before: $beforeCursor
-      last: $lastCount
-    ) @connection(key: "UserSearch_search") {
+    search(query: $query, type: USER, first: $count, after: $cursor)
+    @connection(key: "UserSearch_search") {
       userCount
       edges {
         __id
@@ -50,63 +59,94 @@ const UserSearchQuery = graphql`
 `;
 
 export function UserSearch({ users }: UserSearchProps) {
-  const {
-    data,
-    loadNext,
-    loadPrevious,
-    isLoadingNext,
-    isLoadingPrevious,
-  } = usePaginationFragment<any, UserSearchQuery$key>(UserSearchQuery, users);
+  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
+    any,
+    UserSearchQuery$key
+  >(UserSearchQuery, users);
+  const [startPos, setStartPosition] = useState(0);
+  const [loadCount, setLoadCount] = useState(count);
+  const deferredLoadCount = useDeferredValue(loadCount, deferredConfig);
+  const [startTransition] = useTransition(transitionConfig);
+  const userCount = data?.search.userCount ?? 0;
+  const possibleNextPos = startPos + count;
+  const nextPos =
+    possibleNextPos > userCount ? userCount % count : possibleNextPos;
+  const prevPos = startPos - count;
+  const nextNode = data?.search.edges?.[nextPos];
+  const loadMore = useCallback(
+    (c: number = deferredLoadCount) => {
+      // Don't fetch again if we're already loading next
+      if (isLoadingNext) {
+        return;
+      }
+      loadNext(c, {
+        onComplete: () => {
+          if (loadCount !== count) {
+            setLoadCount(count);
+          }
+        },
+      });
+    },
+    [isLoadingNext, loadNext, loadCount, deferredLoadCount],
+  );
 
-  const loadMore = useCallback(() => {
-    // Don't fetch again if we're already loading next
-    if (isLoadingNext) {
-      return;
+  const prevPage = useCallback(() => {
+    if (prevPos > -1) {
+      setStartPosition(prevPos);
     }
-    loadNext(20);
-  }, [isLoadingNext, loadNext]);
-  const loadPrev = useCallback(() => {
-    // Don't fetch again if we're already loading next
-    if (isLoadingPrevious) {
-      return;
+  }, [prevPos, setStartPosition]);
+
+  const nextPage = useCallback(() => {
+    startTransition(() => {
+      if (!nextNode) {
+        loadMore();
+      }
+      if (hasNext || nextNode) {
+        setStartPosition(nextPos);
+      }
+    });
+  }, [hasNext, loadMore, nextNode, nextPos, startTransition]);
+
+  // Handle the user pressing 'next' multiple times in a row
+  useEffect(() => {
+    const length = data?.search.edges?.length ?? count;
+    if (length < nextPos && hasNext && !isLoadingNext) {
+      setLoadCount(nextPos - length);
     }
-    loadPrevious(20);
-  }, [isLoadingPrevious, loadPrevious]);
-  console.log(data, users);
+  }, [data?.search.edges?.length, isLoadingNext, nextPos, hasNext]);
+
+  // Ensure the list is up to date
+  useEffect(() => {
+    const length = data?.search.edges?.length ?? count;
+    if (length < nextPos) {
+      loadMore();
+    }
+  }, [data?.search.edges?.length, nextPos, loadMore]);
+  const Nav = (
+    <UserNav
+      nextDisabled={!(hasNext || nextNode)}
+      nextPage={nextPage}
+      prevDisabled={prevPos <= 0}
+      prevPage={prevPage}
+    ></UserNav>
+  );
   return (
-    <div className="users">
-      {(data?.search.edges ?? []).map((edge) => {
-        if (edge == null || edge.node == null) {
-          return null;
-        }
-        return (
-          <div className="users-user" key={edge.__id}>
-            <Avatar
-              alt={edge.node.login}
-              src={edge.node.avatarUrl as string}
-            ></Avatar>
-            <Link href={edge.node.url as string}>{edge.node.login}</Link>
-            {edge.node.name}
-          </div>
-        );
-      })}
-      <button
-        name="load prev users"
-        type="button"
-        className="load-prev"
-        onClick={loadPrev}
-      >
-        Load Prev
-      </button>
-      <button
-        name="load more users"
-        type="button"
-        className="load-more"
-        onClick={loadMore}
-      >
-        Load More
-      </button>
-    </div>
+    <Container className="users">
+      <Grid container alignItems="baseline" justifyContent="center">
+        <Grid item>
+          <Typography color="textPrimary">
+            {(data?.search.userCount ?? 0).toLocaleString()} matches
+          </Typography>
+        </Grid>
+        <Grid item>{Nav}</Grid>
+      </Grid>
+      <UserList
+        list={data?.search.edges ?? []}
+        startPos={startPos}
+        endPos={userCount === 0 ? 0 : nextPos}
+      />
+      {Nav}
+    </Container>
   );
 }
 

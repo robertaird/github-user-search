@@ -1,9 +1,9 @@
 const proxy = require('express-http-proxy');
 
-function addProxyMiddleware(app) {
+function addProxyMiddleware(app, subPath = '') {
   // Proxying the graphQL requests to keep the token server side
   app.use(
-    '/graphql',
+    `${subPath}/graphql`,
     proxy('api.github.com', {
       https: true,
       proxyReqOptDecorator: function addHeaders(proxyReqOpts) {
@@ -18,10 +18,10 @@ function addProxyMiddleware(app) {
     }),
   );
 
-  // We'll be serving the build directory directly, one way or another
+  /* proxy to localhost:3000 for react-scripts if not production */
   /* istanbul ignore else */
   if (process.env.NODE_ENV !== 'production') {
-    app.use('/*', proxy('localhost:3000'));
+    app.use(`${subPath}/*`, proxy('localhost:3000'));
   }
 }
 

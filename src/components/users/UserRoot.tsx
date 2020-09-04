@@ -1,19 +1,21 @@
 import type {} from 'react/experimental';
 import React, {
-  Fragment,
   useCallback,
   useEffect,
   unstable_useTransition as useTransition,
   Suspense,
 } from 'react';
 import graphql from 'babel-plugin-relay/macro';
-import { TextField } from '@material-ui/core';
+import { Grid, TextField, Typography } from '@material-ui/core';
 import { useQueryLoader, usePreloadedQuery } from 'react-relay/hooks';
+import ErrorBoundary from 'components/errorBoundary';
 import UserSearch from './UserSearch';
 
 type UserRootProps = {
+  init: () => void;
   defaultSearch?: string;
 };
+
 const UserRootQuery = graphql`
   query UserRootQuery($query: String!) {
     # Compose the data dependencies of child components
@@ -22,51 +24,69 @@ const UserRootQuery = graphql`
   }
 `;
 
-function User({ queryReference }: any) {
+const LoadingText = <Typography color="textSecondary">Loading...</Typography>;
+
+const GridItem = ({ children }: { children: React.ReactNode }) => (
+  <Grid item container xs={12} justifyContent="center">
+    {children}
+  </Grid>
+);
+
+const User = React.memo(function User({ queryReference }: any) {
   const data = usePreloadedQuery(UserRootQuery, queryReference);
   return <UserSearch users={data} />;
-}
+});
 
-export function UserRoot({ defaultSearch = 'rob' }: UserRootProps) {
-  const [queryReference, loadQuery, disposeQuery] = useQueryLoader(
-    UserRootQuery,
-  );
-  const [startTransition, isPending] = useTransition({
-    timeoutMs: 3000,
-  });
+const transitionConfig = {
+  timeoutMs: 3000,
+};
 
-  console.log(isPending);
+export function UserRoot({ defaultSearch = '', init }: UserRootProps) {
+  const [queryReference, loadQuery] = useQueryLoader(UserRootQuery);
+  const [startTransition] = useTransition(transitionConfig);
 
-  useEffect(() => {
-    loadQuery({ query: defaultSearch });
-    return () => {
-      disposeQuery();
-    };
-  }, [defaultSearch, disposeQuery, loadQuery]);
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       startTransition(() => {
+        init();
         loadQuery({ query: e.target.value });
       });
     },
-    [loadQuery, startTransition],
+    [init, loadQuery, startTransition],
   );
 
+  useEffect(() => {
+    if (defaultSearch !== '') {
+      init();
+    }
+  }, [defaultSearch, init]);
+
+  useEffect(() => {
+    loadQuery({ query: defaultSearch });
+  }, [defaultSearch, loadQuery]);
+
   return (
-    <Fragment>
-      <TextField
-        label="Search field"
-        defaultValue={defaultSearch}
-        type="search"
-        variant="outlined"
-        onChange={onChange}
-      />
-      {queryReference === null ? null : (
-        <Suspense fallback={'Loading...'}>
-          <User queryReference={queryReference} />
-        </Suspense>
-      )}
-    </Fragment>
+    <Grid container>
+      <GridItem>
+        <TextField
+          data-testid="search-input"
+          label="Search field"
+          defaultValue={defaultSearch}
+          type="search"
+          variant="outlined"
+          onChange={onChange}
+        />
+      </GridItem>
+      <GridItem>
+        <ErrorBoundary>
+          {queryReference === null ? null : (
+            <Suspense fallback={LoadingText}>
+              <User queryReference={queryReference} />
+            </Suspense>
+          )}
+        </ErrorBoundary>
+      </GridItem>
+    </Grid>
   );
 }
 
