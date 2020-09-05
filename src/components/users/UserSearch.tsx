@@ -98,6 +98,10 @@ export function UserSearch({ users }: UserSearchProps) {
     [isLoadingNext, loadNext, loadCount, deferredLoadCount],
   );
 
+  useEffect(() => {
+    setStartPosition(0);
+  }, [userCount]);
+
   const prevPage = useCallback(() => {
     if (prevPos > -1) {
       setStartPosition(prevPos);
