@@ -14,12 +14,20 @@ import UserNav from './Nav';
 import type { UserSearchQuery$key } from './__generated__/UserSearchQuery.graphql';
 
 type UserSearchProps = {
+  // TODO: Actual type
   users: any;
 };
 
 const Container = styled.div`
   width: 100%;
   padding-bottom: 2rem;
+`;
+
+const MatchesGrid = styled(Grid)`
+  && {
+    min-width: 130px;
+    margin-right: 25px;
+  }
 `;
 
 const count = 10;
@@ -126,18 +134,18 @@ export function UserSearch({ users }: UserSearchProps) {
     <UserNav
       nextDisabled={!(hasNext || nextNode)}
       nextPage={nextPage}
-      prevDisabled={prevPos <= 0}
+      prevDisabled={prevPos < 0}
       prevPage={prevPage}
     ></UserNav>
   );
   return (
     <Container className="users">
       <Grid container alignItems="baseline" justifyContent="center">
-        <Grid item>
+        <MatchesGrid item>
           <Typography color="textPrimary">
             {(data?.search.userCount ?? 0).toLocaleString()} matches
           </Typography>
-        </Grid>
+        </MatchesGrid>
         <Grid item>{Nav}</Grid>
       </Grid>
       <UserList
