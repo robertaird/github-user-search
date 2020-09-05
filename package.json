@@ -2,7 +2,6 @@
   "name": "github-user-search",
   "homepage": "https://robaird.com/github-search",
   "version": "0.1.0",
-  "private": true,
   "main": "build/index.js",
   "dependencies": {
     "@material-ui/core": "^5.0.0-alpha.8",
