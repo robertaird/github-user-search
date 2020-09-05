@@ -32,6 +32,7 @@ describe('App', () => {
         timeout: 5000,
       },
     );
+    // false positive here, use before assignment.
     // @ts-ignore
     expect(listEl?.querySelector('a')?.innerHTML).toBe(textContent);
   });

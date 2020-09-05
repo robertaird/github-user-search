@@ -14,8 +14,8 @@ import {
   StarBorder as Star,
 } from '@material-ui/icons';
 import ErrorBoundary from 'components/errorBoundary';
-import loadImage from './loadImage';
-import type { node } from './types';
+import { loadImage } from 'utils';
+import type { node } from '../types';
 
 type BaseItemProps = {
   avatarComponent: React.ReactNode;

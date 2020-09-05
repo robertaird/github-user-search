@@ -9,8 +9,7 @@ import styled from 'styled-components';
 import graphql from 'babel-plugin-relay/macro';
 import { usePaginationFragment } from 'react-relay/hooks';
 import { Grid, Typography } from '@material-ui/core';
-import UserList from './List';
-import UserNav from './Nav';
+import { UserList, UserNav } from './components';
 import type { UserSearchQuery$key } from './__generated__/UserSearchQuery.graphql';
 
 type UserSearchProps = {

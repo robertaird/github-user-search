@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Divider } from '@material-ui/core';
 import { Item, SkeletonItem } from './ListItem';
-import type { edges } from './types';
+import type { edges } from '../types';
 
 type UserListProps = {
   list: edges;
