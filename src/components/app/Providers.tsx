@@ -1,6 +1,7 @@
 import React from 'react';
 import { amber, cyan } from '@material-ui/core/colors';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
 import { RelayEnvironment } from 'utils';
 
@@ -25,12 +26,18 @@ const theme = createMuiTheme({
   spacing: 4,
 });
 
+declare module 'styled-components' {
+  export interface DefaultTheme extends Theme {}
+}
+
 function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider theme={theme}>
-      <RelayEnvironmentProvider environment={RelayEnvironment}>
-        {children}
-      </RelayEnvironmentProvider>
+      <StyledThemeProvider theme={theme}>
+        <RelayEnvironmentProvider environment={RelayEnvironment}>
+          {children}
+        </RelayEnvironmentProvider>
+      </StyledThemeProvider>
     </ThemeProvider>
   );
 }

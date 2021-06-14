@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Divider } from '@material-ui/core';
+import { ListContainer } from './ListContainer';
 import { Item, SkeletonItem } from './ListItem';
 import type { edges } from '../types';
 
@@ -15,6 +16,7 @@ const ListItem = ({ children }: { children: React.ReactNode }) => (
     <Divider />
   </Fragment>
 );
+
 export function UserList({ list, startPos, endPos }: UserListProps) {
   const expectedItems = endPos - startPos;
   const slice = list.slice(startPos, endPos);
@@ -28,7 +30,7 @@ export function UserList({ list, startPos, endPos }: UserListProps) {
     );
   }
   return (
-    <div>
+    <ListContainer>
       {slice.map((edge) => {
         if (
           edge === null ||
@@ -44,7 +46,7 @@ export function UserList({ list, startPos, endPos }: UserListProps) {
         );
       })}
       {Skeletons}
-    </div>
+    </ListContainer>
   );
 }
 
