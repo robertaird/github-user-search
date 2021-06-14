@@ -32,8 +32,13 @@ const GridItem = ({ children }: { children: React.ReactNode }) => (
   </Grid>
 );
 
-const User = React.memo(function User({ queryReference }: any) {
+const User = React.memo(function User({ init, queryReference }: any) {
   const data = usePreloadedQuery(UserRootQuery, queryReference);
+  useEffect(() => {
+    if (data) {
+      init();
+    }
+  }, [data, init]);
   return <UserSearch users={data} />;
 });
 
@@ -48,11 +53,10 @@ export function UserRoot({ defaultSearch = '', init }: UserRootProps) {
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       startTransition(() => {
-        init();
         loadQuery({ query: e.target.value });
       });
     },
-    [init, loadQuery, startTransition],
+    [loadQuery, startTransition],
   );
 
   useEffect(() => {
@@ -62,7 +66,9 @@ export function UserRoot({ defaultSearch = '', init }: UserRootProps) {
   }, [defaultSearch, init]);
 
   useEffect(() => {
-    loadQuery({ query: defaultSearch });
+    if (defaultSearch !== '') {
+      loadQuery({ query: defaultSearch });
+    }
   }, [defaultSearch, loadQuery]);
 
   return (
@@ -81,7 +87,7 @@ export function UserRoot({ defaultSearch = '', init }: UserRootProps) {
         <ErrorBoundary>
           {queryReference === null ? null : (
             <Suspense fallback={LoadingText}>
-              <User queryReference={queryReference} />
+              <User init={init} queryReference={queryReference} />
             </Suspense>
           )}
         </ErrorBoundary>
