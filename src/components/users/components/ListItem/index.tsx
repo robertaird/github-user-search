@@ -15,7 +15,7 @@ import {
 } from '@material-ui/icons';
 import ErrorBoundary from 'components/errorBoundary';
 import { loadImage } from 'utils';
-import type { node } from '../types';
+import type { node } from '../../types';
 
 type BaseItemProps = {
   avatarComponent: React.ReactNode;
@@ -165,7 +165,7 @@ export const Item = ({
   return (
     <BaseItem
       avatarComponent={
-        avatarUrl && (
+        (avatarUrl as string) && (
           <ErrorBoundary>
             <Suspense fallback={AvatarSkeleton}>
               <SuspenseAvatar alt={login} src={avatarUrl as string} />
