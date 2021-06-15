@@ -1,21 +1,18 @@
 import React, { Suspense } from 'react';
-import styled, { css } from 'styled-components';
-import {
-  Avatar,
-  AvatarProps,
-  Link,
-  Typography,
-  Tooltip,
-  Grid,
-} from '@material-ui/core';
-import { Skeleton as BaseSkeleton } from '@material-ui/lab';
+import { Link, Typography, Grid } from '@material-ui/core';
 import {
   PeopleAltOutlined as PeopleAlt,
   StarBorder as Star,
 } from '@material-ui/icons';
 import ErrorBoundary from 'components/errorBoundary';
-import { loadImage } from 'utils';
-import type { node } from '../types';
+import type { node } from '../../types';
+import { AvatarSkeleton } from './AvatarSkeleton';
+import { BioText } from './BioText';
+import { FlexItem } from './FlexItem';
+import { GridItem } from './GridItem';
+import { InfoIcon } from './InfoIcon';
+import { SuspenseAvatar } from './SuspenseAvatar';
+import { TextSkeleton } from './TextSkeleton';
 
 type BaseItemProps = {
   avatarComponent: React.ReactNode;
@@ -31,76 +28,6 @@ type BaseItemProps = {
 type ItemProps = {
   node: node;
 };
-
-type FlexProps = {
-  width?: string;
-};
-
-const FlexItem = styled.div<FlexProps>`
-  flex: 0 0 auto;
-  padding: 16px;
-  ${({ width }) =>
-    width
-      ? css`
-          width: ${width}px;
-          padding: 0 16px;
-        `
-      : ''}
-`;
-
-const GridItem = styled(Grid)`
-  text-align: initial;
-`;
-
-const InfoIconText = styled(Typography)`
-  padding: 0 4px 0 0;
-`;
-
-const BioText = styled(Typography)`
-  max-width: 80%;
-  transform: translateY(-0.75em);
-`;
-
-const Skeleton = styled(BaseSkeleton)`
-  min-width: 20px;
-`;
-
-const TextSkeleton = <Skeleton variant="text" />;
-
-const AvatarSkeleton = (
-  <Skeleton
-    data-testid="avatarskeleton"
-    width={40}
-    height={40}
-    variant="circular"
-  />
-);
-
-const SuspenseAvatar = ({
-  alt,
-  src,
-  ...props
-}: AvatarProps & { src: string }) => {
-  loadImage(src).read();
-  return <Avatar alt={alt} src={src} {...props} />;
-};
-
-const InfoIcon = ({
-  children,
-  title,
-  Icon,
-}: {
-  Icon: typeof import('@material-ui/core/SvgIcon').default;
-  children: React.ReactNode;
-  title: string;
-}) => (
-  <Tooltip title={title}>
-    <Grid item container justifyContent="flex-end">
-      <InfoIconText color="textPrimary">{children}</InfoIconText>
-      <Icon color="secondary" />
-    </Grid>
-  </Tooltip>
-);
 
 const emptyCount = { totalCount: 0 };
 
@@ -165,7 +92,7 @@ export const Item = ({
   return (
     <BaseItem
       avatarComponent={
-        avatarUrl && (
+        (avatarUrl as string) && (
           <ErrorBoundary>
             <Suspense fallback={AvatarSkeleton}>
               <SuspenseAvatar alt={login} src={avatarUrl as string} />
