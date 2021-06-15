@@ -16,6 +16,7 @@ const transform = css`
 
 const setTransform = ({ init }: StyleProps) =>
   init === 'true' ? '' : transform;
+
 const Header = styled.header<StyleProps>`
   transition: transform 1s ease;
   ${setTransform}

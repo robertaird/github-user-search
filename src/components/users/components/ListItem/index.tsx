@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Link, Typography, Grid } from '@material-ui/core';
+import { Divider, Grid, Link, Typography } from '@material-ui/core';
 import {
   PeopleAltOutlined as PeopleAlt,
   StarBorder as Star,
@@ -41,29 +41,32 @@ const BaseItem = ({
   followers,
   testId = 'list-item',
 }: BaseItemProps) => (
-  <Grid data-testid={testId} container spacing={2} alignItems="center">
-    <FlexItem>{avatarComponent}</FlexItem>
-    <GridItem direction="column" container item xs spacing={1}>
-      <Link href={url}>{linkComponent}</Link>
-      <Typography color="textPrimary">{nameComponent}</Typography>
-    </GridItem>
-    <GridItem direction="column" container item xs={3}>
-      <InfoIcon Icon={Star} title="Starred repositories">
-        {stars}
-      </InfoIcon>
-      <InfoIcon Icon={PeopleAlt} title="Followers">
-        {followers}
-      </InfoIcon>
-    </GridItem>
-    {bioComponent && (
-      <GridItem container item wrap="nowrap" xs={12}>
-        <FlexItem width="38" />
-        <BioText variant="body2" color="textSecondary">
-          {bioComponent}
-        </BioText>
+  <>
+    <Grid data-testid={testId} container spacing={2} alignItems="center">
+      <FlexItem>{avatarComponent}</FlexItem>
+      <GridItem direction="column" container item xs spacing={1}>
+        <Link href={url}>{linkComponent}</Link>
+        <Typography color="textPrimary">{nameComponent}</Typography>
       </GridItem>
-    )}
-  </Grid>
+      <GridItem direction="column" container item xs={3}>
+        <InfoIcon Icon={Star} title="Starred repositories">
+          {stars}
+        </InfoIcon>
+        <InfoIcon Icon={PeopleAlt} title="Followers">
+          {followers}
+        </InfoIcon>
+      </GridItem>
+      {bioComponent && (
+        <GridItem container item wrap="nowrap" xs={12}>
+          <FlexItem width="38" />
+          <BioText variant="body2" color="textSecondary">
+            {bioComponent}
+          </BioText>
+        </GridItem>
+      )}
+    </Grid>
+    <Divider />
+  </>
 );
 
 export const SkeletonItem = () => (
