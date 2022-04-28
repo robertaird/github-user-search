@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  startTransition,
-  useTransition,
-  Suspense,
-} from 'react';
+import React, { useCallback, useEffect, useTransition, Suspense } from 'react';
 import graphql from 'babel-plugin-relay/macro';
 import { Grid, TextField, Typography } from '@mui/material';
 import { useQueryLoader, usePreloadedQuery } from 'react-relay/hooks';
@@ -42,13 +36,9 @@ const User = React.memo(function User({ init, queryReference }: any) {
   return <UserSearch users={data} />;
 });
 
-// const transitionConfig = {
-//   timeoutMs: 3000,
-// };
-
 export function UserRoot({ defaultSearch = '', init }: UserRootProps) {
   const [queryReference, loadQuery] = useQueryLoader(UserRootQuery);
-  const [something] = useTransition();
+  const [, startTransition] = useTransition();
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

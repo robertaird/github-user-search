@@ -6,10 +6,7 @@ type ListContainerProps = {
 };
 
 const Container = styled.div`
-  padding: ${({ theme }) => {
-    console.log(theme);
-    return '18';
-  }}px;
+  padding: ${({ theme }) => theme.spacing(1)}px;
   overflow: auto;
 `;
 
