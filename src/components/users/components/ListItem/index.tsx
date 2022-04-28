@@ -6,14 +6,16 @@ import {
   StarBorder as Star,
 } from '@mui/icons-material';
 import ErrorBoundary from 'components/errorBoundary';
+import {
+  AvatarSkeleton,
+  BioText,
+  FlexItem,
+  GridItem,
+  InfoIcon,
+  SuspenseAvatar,
+  TextSkeleton,
+} from './components';
 import type { node } from '../../types';
-import { AvatarSkeleton } from './AvatarSkeleton';
-import { BioText } from './BioText';
-import { FlexItem } from './FlexItem';
-import { GridItem } from './GridItem';
-import { InfoIcon } from './InfoIcon';
-import { SuspenseAvatar } from './SuspenseAvatar';
-import { TextSkeleton } from './TextSkeleton';
 
 type BaseItemProps = {
   avatarComponent: React.ReactNode;
