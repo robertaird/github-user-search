@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
-import { Divider, Grid, Link, Typography } from '@mui/material';
+import { Divider, Grid, Link, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import {
   PeopleAltOutlined as PeopleAlt,
   StarBorder as Star,
@@ -40,34 +41,48 @@ const BaseItem = ({
   stars,
   followers,
   testId = 'list-item',
-}: BaseItemProps) => (
-  <>
-    <Grid data-testid={testId} container spacing={2} alignItems="center">
-      <FlexItem>{avatarComponent}</FlexItem>
-      <GridItem direction="column" container item xs spacing={1}>
-        <Link href={url}>{linkComponent}</Link>
-        <Typography color="textPrimary">{nameComponent}</Typography>
-      </GridItem>
-      <GridItem direction="column" container item xs={3}>
-        <InfoIcon Icon={Star} title="Starred repositories">
-          {stars}
-        </InfoIcon>
-        <InfoIcon Icon={PeopleAlt} title="Followers">
-          {followers}
-        </InfoIcon>
-      </GridItem>
-      {bioComponent && (
-        <GridItem container item wrap="nowrap" xs={12}>
-          <FlexItem width="38" />
-          <BioText variant="body2" color="textSecondary">
-            {bioComponent}
-          </BioText>
+}: BaseItemProps) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
+
+  return (
+    <>
+      <Grid data-testid={testId} container spacing={2} alignItems="center">
+        <FlexItem>{avatarComponent}</FlexItem>
+        <GridItem direction="column" container item xs md={3} spacing={1}>
+          <Link href={url}>{linkComponent}</Link>
+          <Typography color="textPrimary">{nameComponent}</Typography>
         </GridItem>
-      )}
-    </Grid>
-    <Divider />
-  </>
-);
+        {(!matches || bioComponent) && (
+          <GridItem
+            container
+            item
+            wrap="nowrap"
+            xs={12}
+            md
+            order={matches ? 2 : 0}
+          >
+            {matches && <FlexItem width="38" />}
+            {bioComponent && (
+              <BioText matches={matches} variant="body2" color="textSecondary">
+                {bioComponent}
+              </BioText>
+            )}
+          </GridItem>
+        )}
+        <GridItem direction="column" container item xs={3} md={2}>
+          <InfoIcon Icon={Star} title="Starred repositories">
+            {stars}
+          </InfoIcon>
+          <InfoIcon Icon={PeopleAlt} title="Followers">
+            {followers}
+          </InfoIcon>
+        </GridItem>
+      </Grid>
+      <Divider />
+    </>
+  );
+};
 
 export const SkeletonItem = () => (
   <BaseItem

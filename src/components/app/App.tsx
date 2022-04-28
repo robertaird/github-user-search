@@ -44,7 +44,8 @@ function App() {
     <Providers>
       <div className="App">
         <Header init={initialized.toString()} className="App-header">
-          <GitHubIcon fontSize="large" color="primary" /> User Search
+          <GitHubIcon sx={{ mr: 2 }} fontSize="large" color="primary" /> User
+          Search
         </Header>
         <Container init={initialized.toString()} maxWidth="md">
           <UserRoot init={init} defaultSearch={defaultSearch ?? ''} />
