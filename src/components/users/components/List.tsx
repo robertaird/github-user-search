@@ -1,13 +1,17 @@
 import React from 'react';
 import { ListContainer } from './ListContainer';
 import { Item, SkeletonItem } from './ListItem';
-import type { edges } from '../types';
+import type { edges, node } from '../types';
 
 type UserListProps = {
   list: edges;
   startPos: number;
   endPos: number;
 };
+
+function isUser(node: node | null): node is node {
+  return (node as node & { __typename: string })?.__typename === 'User';
+}
 
 export function UserList({ list, startPos, endPos }: UserListProps) {
   const expectedItems = endPos - startPos;
@@ -20,11 +24,7 @@ export function UserList({ list, startPos, endPos }: UserListProps) {
   return (
     <ListContainer>
       {slice.map((edge) => {
-        if (
-          edge === null ||
-          edge.node === null ||
-          (edge.node as { __typename: string }).__typename !== 'User'
-        ) {
+        if (edge === null || !isUser(edge.node)) {
           return null;
         }
         return <Item key={edge.__id} node={edge.node} />;

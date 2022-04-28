@@ -3,7 +3,6 @@ import React, {
   useEffect,
   useState,
   useDeferredValue,
-  startTransition,
   useTransition,
 } from 'react';
 import styled from '@emotion/styled';
@@ -31,8 +30,7 @@ const MatchesGrid = styled(Grid)`
 `;
 
 const count = 10;
-const deferredConfig = { timeoutMs: 500 };
-const transitionConfig = { timeoutMs: 3000 };
+
 const UserSearchQuery = graphql`
   fragment UserSearchQuery on Query
   @argumentDefinitions(
@@ -71,16 +69,24 @@ export function UserSearch({ users }: UserSearchProps) {
     any,
     UserSearchQuery$key
   >(UserSearchQuery, users);
+
   const [startPos, setStartPosition] = useState(0);
   const [loadCount, setLoadCount] = useState(count);
   const deferredLoadCount = useDeferredValue(loadCount);
-  const [idk] = useTransition();
+  const [isPending, startTransition] = useTransition();
+
   const userCount = data?.search.userCount ?? 0;
   const possibleNextPos = startPos + count;
   const nextPos =
     possibleNextPos > userCount ? userCount % count : possibleNextPos;
   const prevPos = startPos - count;
+
+  useEffect(() => {
+    console.log(isLoadingNext, isPending);
+  }, [isLoadingNext, isPending]);
+
   const nextNode = data?.search.edges?.[nextPos];
+
   const loadMore = useCallback(
     (c: number = deferredLoadCount) => {
       // Don't fetch again if we're already loading next
@@ -111,7 +117,7 @@ export function UserSearch({ users }: UserSearchProps) {
   const nextPage = useCallback(() => {
     startTransition(() => {
       if (!nextNode) {
-        loadMore();
+        loadMore(5);
       }
       if (hasNext || nextNode) {
         setStartPosition(nextPos);
@@ -134,6 +140,7 @@ export function UserSearch({ users }: UserSearchProps) {
       loadMore();
     }
   }, [data?.search.edges?.length, nextPos, loadMore]);
+
   const Nav = (
     <UserNav
       nextDisabled={!(hasNext || nextNode)}
@@ -142,6 +149,7 @@ export function UserSearch({ users }: UserSearchProps) {
       prevPage={prevPage}
     ></UserNav>
   );
+
   return (
     <Container className="users">
       <Grid container alignItems="baseline" justifyContent="center">
