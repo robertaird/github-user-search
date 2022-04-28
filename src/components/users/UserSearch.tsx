@@ -2,13 +2,14 @@ import React, {
   useCallback,
   useEffect,
   useState,
-  unstable_useDeferredValue as useDeferredValue,
-  unstable_useTransition as useTransition,
+  useDeferredValue,
+  startTransition,
+  useTransition,
 } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import graphql from 'babel-plugin-relay/macro';
 import { usePaginationFragment } from 'react-relay/hooks';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import { UserList, UserNav } from './components';
 import type { UserSearchQuery$key } from './__generated__/UserSearchQuery.graphql';
 
@@ -41,7 +42,7 @@ const UserSearchQuery = graphql`
   )
   @refetchable(queryName: "UserSearchPaginationQuery") {
     search(query: $query, type: USER, first: $count, after: $cursor)
-    @connection(key: "UserSearch_search") {
+      @connection(key: "UserSearch_search") {
       userCount
       edges {
         __id
@@ -72,8 +73,8 @@ export function UserSearch({ users }: UserSearchProps) {
   >(UserSearchQuery, users);
   const [startPos, setStartPosition] = useState(0);
   const [loadCount, setLoadCount] = useState(count);
-  const deferredLoadCount = useDeferredValue(loadCount, deferredConfig);
-  const [startTransition] = useTransition(transitionConfig);
+  const deferredLoadCount = useDeferredValue(loadCount);
+  const [idk] = useTransition();
   const userCount = data?.search.userCount ?? 0;
   const possibleNextPos = startPos + count;
   const nextPos =

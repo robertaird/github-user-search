@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Typography, Tooltip, Grid } from '@material-ui/core';
+import styled from '@emotion/styled';
+import { Typography, Tooltip, Grid } from '@mui/material';
 
 const InfoIconText = styled(Typography)`
   padding: 0 4px 0 0;
@@ -11,7 +11,7 @@ export const InfoIcon = ({
   title,
   Icon,
 }: {
-  Icon: typeof import('@material-ui/core/SvgIcon').default;
+  Icon: typeof import('@mui/material/SvgIcon').default;
   children: React.ReactNode;
   title: string;
 }) => (

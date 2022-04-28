@@ -1,15 +1,15 @@
 import React from 'react';
-import { amber, cyan } from '@material-ui/core/colors';
-import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { RelayEnvironmentProvider } from 'react-relay/hooks';
+import { amber, cyan } from '@mui/material/colors';
+import { createMuiTheme, Theme, ThemeProvider } from '@mui/material';
+import { ThemeProvider as StyledThemeProvider } from '@emotion/react';
+import { RelayEnvironmentProvider } from 'react-relay';
 import { RelayEnvironment } from 'utils';
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: cyan[400] },
     secondary: { main: amber[500] },
-    type: 'dark',
+    mode: 'dark',
   },
   components: {
     MuiInputBase: {
@@ -26,7 +26,7 @@ const theme = createMuiTheme({
   spacing: 4,
 });
 
-declare module 'styled-components' {
+declare module '@emotion/styled' {
   export interface DefaultTheme extends Theme {}
 }
 

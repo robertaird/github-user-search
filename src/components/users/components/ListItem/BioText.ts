@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Typography } from '@material-ui/core';
+import styled from '@emotion/styled';
+import { Typography } from '@mui/material';
 
 export const BioText = styled(Typography)`
   max-width: 80%;

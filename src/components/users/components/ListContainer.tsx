@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 type ListContainerProps = {
   children: React.ReactNode;
 };
 
 const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing(1)}px;
+  padding: ${({ theme }) => {
+    console.log(theme);
+    return '18';
+  }}px;
   overflow: auto;
 `;
 
@@ -35,7 +38,7 @@ export function ListContainer({ children }: ListContainerProps) {
   const [containerNode, setContainerNode] = useState<HTMLDivElement | null>(
     null,
   );
-  const containerRef = useCallback((node) => {
+  const containerRef = useCallback((node: HTMLDivElement) => {
     setContainerNode(node);
   }, []);
 

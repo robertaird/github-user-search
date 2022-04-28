@@ -1,13 +1,14 @@
-import type {} from 'react-dom/experimental';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.css';
 import { App } from './components/app';
 import * as serviceWorker from './serviceWorker';
 
-const root = document.getElementById('root') as HTMLDivElement;
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement,
+);
 
-ReactDOM.unstable_createRoot(root).render(
+root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,

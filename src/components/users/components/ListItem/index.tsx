@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
-import { Divider, Grid, Link, Typography } from '@material-ui/core';
+import { Divider, Grid, Link, Typography } from '@mui/material';
 import {
   PeopleAltOutlined as PeopleAlt,
   StarBorder as Star,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import ErrorBoundary from 'components/errorBoundary';
 import type { node } from '../../types';
 import { AvatarSkeleton } from './AvatarSkeleton';

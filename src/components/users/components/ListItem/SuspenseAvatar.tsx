@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, AvatarProps } from '@material-ui/core';
+import { Avatar, AvatarProps } from '@mui/material';
 import { loadImage } from 'utils';
 
 export const SuspenseAvatar = ({
