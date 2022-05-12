@@ -1,0 +1,7 @@
+{
+  "src": "./src/",
+  "schema": "./schema.graphql",
+  "exclude": ["**/node_modules/**/*"],
+  "language": "typescript",
+  "noFutureProofEnums": true
+}

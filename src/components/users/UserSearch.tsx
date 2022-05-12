@@ -73,17 +73,13 @@ export function UserSearch({ users }: UserSearchProps) {
   const [startPos, setStartPosition] = useState(0);
   const [loadCount, setLoadCount] = useState(count);
   const deferredLoadCount = useDeferredValue(loadCount);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const userCount = data?.search.userCount ?? 0;
   const possibleNextPos = startPos + count;
   const nextPos =
     possibleNextPos > userCount ? userCount % count : possibleNextPos;
   const prevPos = startPos - count;
-
-  useEffect(() => {
-    console.log(isLoadingNext, isPending);
-  }, [isLoadingNext, isPending]);
 
   const nextNode = data?.search.edges?.[nextPos];
 
@@ -117,7 +113,7 @@ export function UserSearch({ users }: UserSearchProps) {
   const nextPage = useCallback(() => {
     startTransition(() => {
       if (!nextNode) {
-        loadMore(5);
+        loadMore(10);
       }
       if (hasNext || nextNode) {
         setStartPosition(nextPos);

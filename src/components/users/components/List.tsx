@@ -9,7 +9,7 @@ type UserListProps = {
   endPos: number;
 };
 
-function isUser(node: node | null): node is node {
+function isUser(node?: node | null): node is node {
   return (node as node & { __typename: string })?.__typename === 'User';
 }
 
@@ -24,10 +24,10 @@ export function UserList({ list, startPos, endPos }: UserListProps) {
   return (
     <ListContainer>
       {slice.map((edge) => {
-        if (edge === null || !isUser(edge.node)) {
-          return null;
+        if (edge && isUser(edge.node)) {
+          return <Item key={edge.__id} node={edge.node} />;
         }
-        return <Item key={edge.__id} node={edge.node} />;
+        return null;
       })}
       {Skeletons}
     </ListContainer>

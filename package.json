@@ -17,7 +17,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/react-relay": "^13.0.2",
-    "@types/relay-runtime": "^10.0.3",
+    "@types/relay-runtime": "^13.0.3",
     "@types/resize-observer-browser": "^0.1.5",
     "concurrently": "^5.3.0",
     "dotenv": "^8.2.0",
@@ -38,8 +38,8 @@
     "test": "npm run start:server & react-scripts test",
     "test:server": "cross-env NODE_ENV=test jest --config ./jest.server.config.js --testTimeout 10000",
     "prepare": "npm run build",
-    "relay": "relay-compiler --schema schema.graphql --src ./src/ --language typescript --watchman false $@",
-    "relay:watch": "relay-compiler --schema schema.graphql --src ./src/ --extensions ts tsx --language typescript --watch",
+    "relay": "relay-compiler --schema schema.graphql --src ./src/ relay.config.json",
+    "relay:watch": "relay-compiler --schema schema.graphql --src ./src/ --watch relay.config.json",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -62,13 +62,13 @@
     ]
   },
   "devDependencies": {
-    "babel-plugin-relay": "^10.0.1",
+    "babel-plugin-relay": "^13.2.0",
     "cross-env": "^7.0.2",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "graphql": "^15.3.0",
     "prettier": "^2.1.1",
-    "relay-compiler": "^10.0.1",
-    "relay-compiler-language-typescript": "^13.0.1"
+    "relay-compiler": "^13.2.0",
+    "relay-compiler-language-typescript": "15.0.1"
   }
 }
