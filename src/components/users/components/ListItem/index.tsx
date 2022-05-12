@@ -66,7 +66,7 @@ const BaseItem = ({
           >
             {matches && <FlexItem width="38" />}
             {bioComponent && (
-              <BioText matches={matches} variant="body2" color="textSecondary">
+              <BioText $matches={matches} variant="body2" color="textSecondary">
                 {bioComponent}
               </BioText>
             )}
