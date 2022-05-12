@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 type ListContainerProps = {
   children: React.ReactNode;
@@ -35,7 +35,7 @@ export function ListContainer({ children }: ListContainerProps) {
   const [containerNode, setContainerNode] = useState<HTMLDivElement | null>(
     null,
   );
-  const containerRef = useCallback((node) => {
+  const containerRef = useCallback((node: HTMLDivElement) => {
     setContainerNode(node);
   }, []);
 

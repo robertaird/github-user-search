@@ -1,62 +1,25 @@
+/**
+ * @generated SignedSource<<b77d6954cb56f82028ac097d4a20b173>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type UserRootQueryVariables = {
-    query: string;
+export type UserRootQuery$variables = {
+  query: string;
 };
-export type UserRootQueryResponse = {
-    readonly " $fragmentRefs": FragmentRefs<"UserSearchQuery">;
+export type UserRootQuery$data = {
+  readonly " $fragmentSpreads": FragmentRefs<"UserSearchQuery">;
 };
 export type UserRootQuery = {
-    readonly response: UserRootQueryResponse;
-    readonly variables: UserRootQueryVariables;
+  variables: UserRootQuery$variables;
+  response: UserRootQuery$data;
 };
-
-
-
-/*
-query UserRootQuery(
-  $query: String!
-) {
-  ...UserSearchQuery_1Qr5xf
-}
-
-fragment UserSearchQuery_1Qr5xf on Query {
-  search(query: $query, type: USER, first: 10) {
-    userCount
-    edges {
-      node {
-        __typename
-        ... on User {
-          starredRepositories {
-            totalCount
-          }
-          followers {
-            totalCount
-          }
-          url
-          bio
-          avatarUrl
-          login
-          name
-        }
-        ... on Node {
-          __isNode: __typename
-          id
-        }
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
-}
-*/
 
 const node: ConcreteRequest = (function(){
 var v0 = [
@@ -308,5 +271,7 @@ return {
   }
 };
 })();
-(node as any).hash = '3b9098605713923e28196de680ca62b9';
+
+(node as any).hash = "3b9098605713923e28196de680ca62b9";
+
 export default node;

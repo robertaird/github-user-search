@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid, IconButton, Tooltip } from '@material-ui/core';
-import { ArrowForward, ArrowBack } from '@material-ui/icons';
+import { Grid, IconButton, Tooltip } from '@mui/material';
+import { ArrowForward, ArrowBack } from '@mui/icons-material';
 
 type UserNavProps = {
   nextDisabled: boolean;

@@ -1,13 +1,14 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 type error = Error & { source: string };
 
+type Props = { children: React.ReactNode };
 export default class ErrorBoundary extends React.Component<
-  {},
+  Props,
   { error: error | null }
 > {
-  constructor(props: {}) {
+  constructor(props: Props) {
     super(props);
     this.state = { error: null };
   }

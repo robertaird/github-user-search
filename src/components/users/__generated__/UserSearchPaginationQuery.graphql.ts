@@ -1,66 +1,27 @@
+/**
+ * @generated SignedSource<<7f6d7fb4f8c37c0622623f91b08bad5c>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type UserSearchPaginationQueryVariables = {
-    count?: number | null;
-    cursor?: string | null;
-    query: string;
+export type UserSearchPaginationQuery$variables = {
+  count?: number | null;
+  cursor?: string | null;
+  query: string;
 };
-export type UserSearchPaginationQueryResponse = {
-    readonly " $fragmentRefs": FragmentRefs<"UserSearchQuery">;
+export type UserSearchPaginationQuery$data = {
+  readonly " $fragmentSpreads": FragmentRefs<"UserSearchQuery">;
 };
 export type UserSearchPaginationQuery = {
-    readonly response: UserSearchPaginationQueryResponse;
-    readonly variables: UserSearchPaginationQueryVariables;
+  variables: UserSearchPaginationQuery$variables;
+  response: UserSearchPaginationQuery$data;
 };
-
-
-
-/*
-query UserSearchPaginationQuery(
-  $count: Int = 10
-  $cursor: String
-  $query: String!
-) {
-  ...UserSearchQuery_1jWD3d
-}
-
-fragment UserSearchQuery_1jWD3d on Query {
-  search(query: $query, type: USER, first: $count, after: $cursor) {
-    userCount
-    edges {
-      node {
-        __typename
-        ... on User {
-          starredRepositories {
-            totalCount
-          }
-          followers {
-            totalCount
-          }
-          url
-          bio
-          avatarUrl
-          login
-          name
-        }
-        ... on Node {
-          __isNode: __typename
-          id
-        }
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
-}
-*/
 
 const node: ConcreteRequest = (function(){
 var v0 = [
@@ -337,5 +298,7 @@ return {
   }
 };
 })();
-(node as any).hash = '5224985abcb5868c13f528e99fdf45b8';
+
+(node as any).hash = "5224985abcb5868c13f528e99fdf45b8";
+
 export default node;

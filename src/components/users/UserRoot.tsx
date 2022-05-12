@@ -1,14 +1,9 @@
-import type {} from 'react/experimental';
-import React, {
-  useCallback,
-  useEffect,
-  unstable_useTransition as useTransition,
-  Suspense,
-} from 'react';
+import React, { useCallback, useEffect, useTransition, Suspense } from 'react';
 import graphql from 'babel-plugin-relay/macro';
-import { Grid, TextField, Typography } from '@material-ui/core';
+import { Grid, TextField, Typography } from '@mui/material';
 import { useQueryLoader, usePreloadedQuery } from 'react-relay/hooks';
 import ErrorBoundary from 'components/errorBoundary';
+import { UserRootQuery as UserRootQueryType } from './__generated__/UserRootQuery.graphql';
 import UserSearch from './UserSearch';
 
 type UserRootProps = {
@@ -33,7 +28,10 @@ const GridItem = ({ children }: { children: React.ReactNode }) => (
 );
 
 const User = React.memo(function User({ init, queryReference }: any) {
-  const data = usePreloadedQuery(UserRootQuery, queryReference);
+  const data = usePreloadedQuery<UserRootQueryType>(
+    UserRootQuery,
+    queryReference,
+  );
   useEffect(() => {
     if (data) {
       init();
@@ -42,13 +40,9 @@ const User = React.memo(function User({ init, queryReference }: any) {
   return <UserSearch users={data} />;
 });
 
-const transitionConfig = {
-  timeoutMs: 3000,
-};
-
 export function UserRoot({ defaultSearch = '', init }: UserRootProps) {
   const [queryReference, loadQuery] = useQueryLoader(UserRootQuery);
-  const [startTransition] = useTransition(transitionConfig);
+  const [, startTransition] = useTransition();
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +50,7 @@ export function UserRoot({ defaultSearch = '', init }: UserRootProps) {
         loadQuery({ query: e.target.value });
       });
     },
-    [loadQuery, startTransition],
+    [loadQuery],
   );
 
   useEffect(() => {

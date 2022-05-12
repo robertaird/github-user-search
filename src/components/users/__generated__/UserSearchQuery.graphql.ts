@@ -1,38 +1,41 @@
+/**
+ * @generated SignedSource<<fdf92efbc71e2eaf9f7c523367c590f3>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ReaderFragment } from "relay-runtime";
+import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type UserSearchQuery = {
-    readonly search: {
-        readonly userCount: number;
-        readonly edges: ReadonlyArray<{
-            readonly __id: string;
-            readonly node: {
-                readonly starredRepositories?: {
-                    readonly totalCount: number;
-                };
-                readonly followers?: {
-                    readonly totalCount: number;
-                };
-                readonly url?: unknown;
-                readonly bio?: string | null;
-                readonly avatarUrl?: unknown;
-                readonly login?: string;
-                readonly name?: string | null;
-            } | null;
-        } | null> | null;
-    };
-    readonly " $refType": "UserSearchQuery";
+export type UserSearchQuery$data = {
+  readonly search: {
+    readonly userCount: number;
+    readonly edges: ReadonlyArray<{
+      readonly __id: string;
+      readonly node: {
+        readonly starredRepositories?: {
+          readonly totalCount: number;
+        };
+        readonly followers?: {
+          readonly totalCount: number;
+        };
+        readonly url?: any;
+        readonly bio?: string | null;
+        readonly avatarUrl?: any;
+        readonly login?: string;
+        readonly name?: string | null;
+      } | null;
+    } | null> | null;
+  };
+  readonly " $fragmentType": "UserSearchQuery";
 };
-export type UserSearchQuery$data = UserSearchQuery;
 export type UserSearchQuery$key = {
-    readonly " $data"?: UserSearchQuery$data;
-    readonly " $fragmentRefs": FragmentRefs<"UserSearchQuery">;
+  readonly " $data"?: UserSearchQuery$data;
+  readonly " $fragmentSpreads": FragmentRefs<"UserSearchQuery">;
 };
-
-
 
 const node: ReaderFragment = (function(){
 var v0 = [
@@ -85,7 +88,7 @@ return {
         "path": (v0/*: any*/)
       },
       "fragmentPathInResult": [],
-      "operation": require('./UserSearchPaginationQuery.graphql.ts')
+      "operation": require('./UserSearchPaginationQuery.graphql')
     }
   },
   "name": "UserSearchQuery",
@@ -132,13 +135,6 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "__typename",
-                  "storageKey": null
-                },
                 {
                   "kind": "InlineFragment",
                   "selections": [
@@ -200,6 +196,13 @@ return {
                   ],
                   "type": "User",
                   "abstractKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
                 }
               ],
               "storageKey": null
@@ -259,5 +262,7 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '5224985abcb5868c13f528e99fdf45b8';
+
+(node as any).hash = "5224985abcb5868c13f528e99fdf45b8";
+
 export default node;

@@ -2,19 +2,19 @@ import React, {
   useCallback,
   useEffect,
   useState,
-  unstable_useDeferredValue as useDeferredValue,
-  unstable_useTransition as useTransition,
+  useDeferredValue,
+  useTransition,
 } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import graphql from 'babel-plugin-relay/macro';
 import { usePaginationFragment } from 'react-relay/hooks';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import { UserList, UserNav } from './components';
+import type { UserRootQuery$data } from './__generated__/UserRootQuery.graphql';
 import type { UserSearchQuery$key } from './__generated__/UserSearchQuery.graphql';
 
 type UserSearchProps = {
-  // TODO: Actual type
-  users: any;
+  users: UserRootQuery$data;
 };
 
 const Container = styled.div`
@@ -30,8 +30,7 @@ const MatchesGrid = styled(Grid)`
 `;
 
 const count = 10;
-const deferredConfig = { timeoutMs: 500 };
-const transitionConfig = { timeoutMs: 3000 };
+
 const UserSearchQuery = graphql`
   fragment UserSearchQuery on Query
   @argumentDefinitions(
@@ -41,7 +40,7 @@ const UserSearchQuery = graphql`
   )
   @refetchable(queryName: "UserSearchPaginationQuery") {
     search(query: $query, type: USER, first: $count, after: $cursor)
-    @connection(key: "UserSearch_search") {
+      @connection(key: "UserSearch_search") {
       userCount
       edges {
         __id
@@ -70,16 +69,20 @@ export function UserSearch({ users }: UserSearchProps) {
     any,
     UserSearchQuery$key
   >(UserSearchQuery, users);
+
   const [startPos, setStartPosition] = useState(0);
   const [loadCount, setLoadCount] = useState(count);
-  const deferredLoadCount = useDeferredValue(loadCount, deferredConfig);
-  const [startTransition] = useTransition(transitionConfig);
+  const deferredLoadCount = useDeferredValue(loadCount);
+  const [, startTransition] = useTransition();
+
   const userCount = data?.search.userCount ?? 0;
   const possibleNextPos = startPos + count;
   const nextPos =
     possibleNextPos > userCount ? userCount % count : possibleNextPos;
   const prevPos = startPos - count;
+
   const nextNode = data?.search.edges?.[nextPos];
+
   const loadMore = useCallback(
     (c: number = deferredLoadCount) => {
       // Don't fetch again if we're already loading next
@@ -110,7 +113,7 @@ export function UserSearch({ users }: UserSearchProps) {
   const nextPage = useCallback(() => {
     startTransition(() => {
       if (!nextNode) {
-        loadMore();
+        loadMore(10);
       }
       if (hasNext || nextNode) {
         setStartPosition(nextPos);
@@ -133,6 +136,7 @@ export function UserSearch({ users }: UserSearchProps) {
       loadMore();
     }
   }, [data?.search.edges?.length, nextPos, loadMore]);
+
   const Nav = (
     <UserNav
       nextDisabled={!(hasNext || nextNode)}
@@ -141,6 +145,7 @@ export function UserSearch({ users }: UserSearchProps) {
       prevPage={prevPage}
     ></UserNav>
   );
+
   return (
     <Container className="users">
       <Grid container alignItems="baseline" justifyContent="center">
