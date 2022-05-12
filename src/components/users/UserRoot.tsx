@@ -3,6 +3,7 @@ import graphql from 'babel-plugin-relay/macro';
 import { Grid, TextField, Typography } from '@mui/material';
 import { useQueryLoader, usePreloadedQuery } from 'react-relay/hooks';
 import ErrorBoundary from 'components/errorBoundary';
+import { UserRootQuery as UserRootQueryType } from './__generated__/UserRootQuery.graphql';
 import UserSearch from './UserSearch';
 
 type UserRootProps = {
@@ -27,7 +28,10 @@ const GridItem = ({ children }: { children: React.ReactNode }) => (
 );
 
 const User = React.memo(function User({ init, queryReference }: any) {
-  const data = usePreloadedQuery(UserRootQuery, queryReference);
+  const data = usePreloadedQuery<UserRootQueryType>(
+    UserRootQuery,
+    queryReference,
+  );
   useEffect(() => {
     if (data) {
       init();

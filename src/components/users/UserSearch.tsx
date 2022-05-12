@@ -10,11 +10,11 @@ import graphql from 'babel-plugin-relay/macro';
 import { usePaginationFragment } from 'react-relay/hooks';
 import { Grid, Typography } from '@mui/material';
 import { UserList, UserNav } from './components';
+import type { UserRootQuery$data } from './__generated__/UserRootQuery.graphql';
 import type { UserSearchQuery$key } from './__generated__/UserSearchQuery.graphql';
 
 type UserSearchProps = {
-  // TODO: Actual type
-  users: any;
+  users: UserRootQuery$data;
 };
 
 const Container = styled.div`
